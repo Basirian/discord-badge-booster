@@ -19,18 +19,24 @@ jobs:
         run: ./build.ps1
       - name: Verify
         shell: powershell
-        run: ./tests/verify.ps1
+        run: |
+          ./tests/verify.ps1
+          ./tests/verify-history.ps1
       - name: Write checksum
         shell: powershell
         run: |
           $hash = (Get-FileHash dist/BadgeBooster.exe -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  BadgeBooster.exe" | Set-Content dist/SHA256SUMS.txt -Encoding ascii
+          Copy-Item LICENSE dist/LICENSE.txt
+          Copy-Item docs/licenses/WebView2.txt dist/WEBVIEW2-LICENSE.txt
       - uses: actions/upload-artifact@v4
         with:
           name: BadgeBooster-windows-x64
           path: |
             dist/BadgeBooster.exe
             dist/SHA256SUMS.txt
+            dist/LICENSE.txt
+            dist/WEBVIEW2-LICENSE.txt
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
@@ -48,4 +54,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create $env:RELEASE_TAG dist/BadgeBooster.exe dist/SHA256SUMS.txt --verify-tag --title "Badge Booster $env:RELEASE_TAG" --generate-notes --notes "Windows x64. Requires .NET Framework 4.8 and WebView2. No Discord token or API calls. Discord recognition and badge credit are unverified; no badge or account safety is guaranteed."
+        run: gh release create $env:RELEASE_TAG dist/BadgeBooster.exe dist/SHA256SUMS.txt dist/LICENSE.txt dist/WEBVIEW2-LICENSE.txt --verify-tag --title "Badge Booster $env:RELEASE_TAG" --generate-notes --notes "Windows x64. Requires .NET Framework 4.8 and WebView2. Includes Game Variety rotation, Game Time, a searchable catalog of 10,440 games, and local history with clearly labeled estimates. No Discord token or API calls. Discord recognition and badge credit are unverified; no badge or account safety is guaranteed. Download BadgeBooster.exe to run the app; the other files contain checksums and license notices."

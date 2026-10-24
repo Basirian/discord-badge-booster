@@ -123,6 +123,7 @@ On Windows x64, open **Windows PowerShell** in the project folder:
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\verify.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\verify-history.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\render-preview.ps1
 ```
 

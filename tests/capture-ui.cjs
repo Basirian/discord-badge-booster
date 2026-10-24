@@ -28,7 +28,8 @@ const server = http.createServer((req, res) => {
       mock.queue.slice(0, 3).forEach(g => { if (!mock.played.includes(g.id)) mock.played.push(g.id); });
       mock.push();
     });
-    await page.waitForTimeout(150);
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(500);
     const output = path.join(root, 'docs', 'screenshots'); fs.mkdirSync(output, { recursive: true });
     await page.screenshot({ path: path.join(output, 'game-variety.png') });
     await page.evaluate(() => {

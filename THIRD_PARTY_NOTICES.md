@@ -4,4 +4,4 @@
 - **Game catalog**: snapshot of Discord's public `https://cdn.discordapp.com/detectables/games.json`. Discord and game names belong to their respective owners. The MIT license does not relicense catalog data or trademarks.
 - **Badge imagery**: Discord-related imagery is included for identification; associated marks belong to their respective owners. No affiliation or endorsement is implied.
 
-The MIT license covers this project's original application source and documentation, subject to third-party rights.
+The complete SDK redistribution notice is included in [docs/licenses/WebView2.txt](docs/licenses/WebView2.txt). The MIT license covers this project's original application source and documentation, subject to third-party rights.
