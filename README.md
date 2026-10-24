@@ -13,7 +13,34 @@
   <p>No installer or administrator access required.</p>
 </div>
 
-> Discord recognition and badge progress are unverified. Badge Booster cannot guarantee a badge or freedom from account penalties. Its timers measure local process runtime.
+## Privacy and behavior
+
+**No Discord token. No account login. No Discord API calls.** Badge Booster runs a separate, inert local placeholder under a selected game's executable name. Discord may recognize it through its normal game detection.
+
+The app is designed to keep account credentials and Discord's client out of its operation:
+
+- **No credentials accessed:** it does not request or read tokens, passwords, cookies, Discord account files, browser profiles, or machine identifiers.
+- **No Discord client changes:** it does not inject code into Discord or modify Discord's files. It does not send fabricated analytics events or requests to Discord endpoints.
+- **No downloaded games:** the placeholder is compiled from the included source and embedded in the app. The game catalog contains data, not game binaries.
+- **Local operation:** no outbound requests during normal operation, telemetry, or app update service. Clicking the GitHub link explicitly opens your default browser.
+- **Controlled cleanup:** Stop or closing the app ends its placeholder. The placeholder also exits if its parent launcher terminates. Real game installations are not modified.
+
+These safeguards avoid handing a tool your Discord credentials or letting it act through Discord's API. The source is available to inspect and build yourself; the safeguards do not establish that Discord approves simulated activity.
+
+**Account safety:** The app uses local process detection rather than authenticated Discord requests, but Discord controls its rules and enforcement. Simulated activity may violate applicable terms, so freedom from account penalties cannot be guaranteed. Discord recognition and badge credit have not been verified; the app's timers measure local runtime only.
+
+The UI is embedded and loads local resources. WebView2 background networking, sync, and autofill are disabled; the Microsoft runtime is maintained separately by Windows/Edge. Discord itself may collect telemetry about detected processes.
+
+| Local path under `%LOCALAPPDATA%\BadgeBooster` | Purpose |
+| --- | --- |
+| `games/` | Placeholder copies |
+| `rotation-history.txt` | IDs started by Game Variety |
+| `settings.txt` | Rotation preferences |
+| `stats.txt` | Playtime and migration estimates |
+| `webview/` | WebView2 profile and recent selections |
+| `runtime/<hash>/` | Embedded Microsoft loader |
+
+The catalog is a data snapshot of Discord's public [detectable games catalog](https://cdn.discordapp.com/detectables/games.json). Only the placeholder started by this launcher is stopped. Executable paths are checked for traversal, reserved names, and junctions/symlinks. Different existing files are never overwritten. Data from `%LOCALAPPDATA%\DiscordLocalGame` is migrated when no current data folder exists.
 
 ## See it in action
 
@@ -85,7 +112,7 @@ The exe is unsigned and may have little download reputation. Review the source a
 
 **Is it safe for my account?**
 
-No credentials are requested and no Discord API calls are made by the app. This does not guarantee account safety or compliance with Discord's terms. Simulated activity may violate applicable rules.
+The app avoids credential access, Discord API calls, and client modification. Those safeguards cannot guarantee freedom from account penalties. See [Privacy and behavior](#privacy-and-behavior) above for how it works and the limits of those protections.
 
 **Does it download or run the actual game?**
 
@@ -98,23 +125,6 @@ Old history only stored game IDs. On first migration, the app estimates duration
 **How do I uninstall it?**
 
 Close the app, delete the exe, and optionally delete `%LOCALAPPDATA%\BadgeBooster` to remove settings, history, and placeholder copies. There are no installed services, startup entries, or scheduled tasks.
-
-## Privacy and behavior
-
-The app does not read tokens, passwords, cookies, Discord account files, browser profiles, or machine identifiers. It makes no outbound requests during normal operation. Clicking the GitHub link opens your default browser.
-
-The UI is embedded and loads local resources. WebView2 background networking, sync, and autofill are disabled; the Microsoft runtime is maintained separately by Windows/Edge. Discord itself may collect telemetry about detected processes.
-
-| Local path under `%LOCALAPPDATA%\BadgeBooster` | Purpose |
-| --- | --- |
-| `games/` | Placeholder copies |
-| `rotation-history.txt` | IDs started by Game Variety |
-| `settings.txt` | Rotation preferences |
-| `stats.txt` | Playtime and migration estimates |
-| `webview/` | WebView2 profile and recent selections |
-| `runtime/<hash>/` | Embedded Microsoft loader |
-
-The catalog is a data snapshot of Discord's public [detectable games catalog](https://cdn.discordapp.com/detectables/games.json). Only the placeholder started by this launcher is stopped. Executable paths are checked for traversal, reserved names, and junctions/symlinks. Different existing files are never overwritten. The placeholder exits when its parent launcher terminates. Data from `%LOCALAPPDATA%\DiscordLocalGame` is migrated when no current data folder exists.
 
 ## Build from source
 
