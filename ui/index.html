@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badge Booster</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="nav-head">
+      <div class="nav-brand">
+      <img class="brand-logo" src="logo.png" alt="" width="26" height="26">
+      <div class="nav-title">Badge Booster</div>
+      <button class="nav-settings" id="open-settings" type="button" data-tip="Settings" aria-label="Settings">
+        <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v1.6M8 12.6v1.6M14.2 8h-1.6M3.4 8H1.8M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1M12.4 12.4l-1.1-1.1M4.7 4.7 3.6 3.6"/></svg>
+      </button>
+      </div>
+      <a class="nav-repo" id="open-repo" href="https://github.com/Basirian/discord-badge-booster" title="github.com/Basirian/discord-badge-booster" aria-label="Open Badge Booster on GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.08c-3.12.68-3.78-1.33-3.78-1.33-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.71 2.62 1.22 3.26.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.15 1.79 1.15 3.02 0 4.3-2.62 5.25-5.12 5.53.4.35.76 1.03.76 2.08v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+        <span>github.com/Basirian/discord-badge-booster</span>
+      </a>
+    </div>
+
+    <button class="nav-search" id="open-palette" type="button">
+      <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+      <span>Search</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+
+    <div class="nav-group">
+      <a class="nav-item nav-item-badge" data-view="variety" href="#variety">
+        <img src="badge-variety.svg" alt="" width="18" height="18">
+        <span>Game Variety</span><em id="nav-variety"></em>
+      </a>
+      <a class="nav-item nav-item-badge" data-view="gametime" href="#gametime">
+        <img src="badge-time.svg" alt="" width="18" height="18">
+        <span>Game Time</span><em id="nav-gametime"></em>
+      </a>
+      <a class="nav-item" data-view="library" href="#library">
+        <svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>
+        <span>Library</span><em id="nav-count-library"></em>
+      </a>
+      <a class="nav-item" data-view="history" href="#history">
+        <svg viewBox="0 0 16 16"><path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9"/><path d="M2.5 2.5v2.5H5"/><path d="M8 5.5V8l1.8 1.2"/></svg>
+        <span>History</span><em id="nav-count-history"></em>
+      </a>
+    </div>
+
+    <div class="now" id="now"></div>
+  </nav>
+
+  <main class="main">
+    <!-- Game Variety -->
+    <section class="view" id="view-variety" data-view="variety">
+      <header class="page-head">
+        <div class="mode-title">
+          <img class="mode-badge" src="badge-variety.svg" alt="" width="40" height="40">
+          <div>
+            <h1>Game Variety</h1>
+            <p>Plays a different game for a random length of time, one after another, never repeating one.</p>
+          </div>
+        </div>
+        <div class="page-actions" id="variety-actions"></div>
+      </header>
+      <div class="page-body">
+        <div class="variety">
+          <div id="variety-stage"></div>
+
+          <div class="block" id="duration-block">
+            <div class="block-head">
+              <div>
+                <div class="block-title">Time per game</div>
+                <div class="block-desc" id="duration-desc"></div>
+              </div>
+              <div class="duration-readout" id="duration-readout"></div>
+            </div>
+            <div class="dual-range" id="dual-range">
+              <div class="dual-track"><i id="dual-fill"></i></div>
+              <input type="range" id="range-min" min="1" max="120" step="1" aria-label="Shortest minutes">
+              <input type="range" id="range-max" min="1" max="120" step="1" aria-label="Longest minutes">
+            </div>
+            <div class="dual-scale"><span>1m</span><span>30m</span><span>60m</span><span>90m</span><span>2h</span></div>
+            <div class="duration-foot">
+              <div class="chips" id="presets">
+                <button type="button" data-min="1" data-max="3">1–3m</button>
+                <button type="button" data-min="5" data-max="10">5–10m</button>
+                <button type="button" data-min="10" data-max="15">10–15m</button>
+                <button type="button" data-min="15" data-max="30">15–30m</button>
+                <button type="button" data-min="30" data-max="60">30–60m</button>
+              </div>
+              <div class="range">
+                <label class="input-num"><input id="min-minutes" type="number" min="1" max="1440" step="1" aria-label="Shortest minutes"><span>min</span></label>
+                <span class="range-dash"></span>
+                <label class="input-num"><input id="max-minutes" type="number" min="1" max="1440" step="1" aria-label="Longest minutes"><span>min</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="choice-grid">
+            <div class="block">
+              <div class="block-title">Order</div>
+              <div class="choices" id="order">
+                <button type="button" class="choice" data-order="random">
+                  <svg viewBox="0 0 16 16"><path d="M2 4.5h2c3 0 4.5 7 7.5 7H14M2 11.5h2c1.2 0 2-.9 2.8-2.1M9.2 6.6c.8-1.2 1.6-2.1 2.8-2.1H14M12.5 3 14 4.5 12.5 6M12.5 10 14 11.5 12.5 13"/></svg>
+                  <span><b>Random</b><small>Shuffle the pool</small></span>
+                </button>
+                <button type="button" class="choice" data-order="alpha">
+                  <svg viewBox="0 0 16 16"><path d="M2.5 11 4.5 5l2 6M3.2 9h2.6M9.5 5h4l-4 6h4"/></svg>
+                  <span><b>Alphabetical</b><small>A to Z</small></span>
+                </button>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Games to play</div>
+              <div class="choices" id="pool">
+                <button type="button" class="choice" data-pool="all">
+                  <svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>
+                  <span><b>Whole library</b><small id="pool-all-desc"></small></span>
+                </button>
+                <button type="button" class="choice" data-pool="filter">
+                  <svg viewBox="0 0 16 16"><path d="M2.5 3.5h11l-4.2 5v4l-2.6 1v-5z"/></svg>
+                  <span><b>Library filter</b><small id="pool-filter-desc"></small></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="history-strip" id="history-strip"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Time -->
+    <section class="view" id="view-gametime" data-view="gametime" hidden>
+      <header class="page-head">
+        <div class="mode-title">
+          <img class="mode-badge" src="badge-time.svg" alt="" width="40" height="40">
+          <div>
+            <h1>Game Time</h1>
+            <p>Keep one game showing as played on Discord until you stop it.</p>
+          </div>
+        </div>
+      </header>
+      <div class="page-body">
+        <div class="gametime">
+          <div id="gt-active"></div>
+          <div class="gt-picker" id="gt-picker">
+            <div class="gt-picker-title" id="gt-picker-title">Choose a game</div>
+            <label class="gt-search">
+              <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+              <input id="gt-search" type="text" placeholder="Search games" autocomplete="off" spellcheck="false">
+              <button id="gt-clear" type="button" aria-label="Clear search" hidden><svg viewBox="0 0 16 16"><path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/></svg></button>
+            </label>
+            <div class="gt-results" id="gt-results"></div>
+            <div id="gt-selection"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Library -->
+    <section class="view view-library" id="view-library" data-view="library" hidden>
+      <header class="page-head">
+        <div>
+          <h1>Library</h1>
+          <p id="library-sub">Every game Discord can detect, from the bundled catalog.</p>
+        </div>
+      </header>
+      <div class="toolbar">
+        <label class="field-search">
+          <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+          <input id="search" type="text" placeholder="Filter games by name" autocomplete="off" spellcheck="false">
+          <button id="clear-search" type="button" aria-label="Clear filter" hidden><svg viewBox="0 0 16 16"><path d="m4.5 4.5 7 7M11.5 4.5l-7 7"/></svg></button>
+          <kbd>/</kbd>
+        </label>
+        <div class="tabs" id="filters" role="tablist">
+          <button type="button" data-filter="all" class="is-active">All</button>
+          <button type="button" data-filter="unplayed">Not rotated</button>
+          <button type="button" data-filter="played">Rotated</button>
+        </div>
+        <span class="toolbar-meta" id="count"></span>
+      </div>
+      <div class="library">
+        <div class="table">
+          <div class="table-head">
+            <span>Name</span><span>Executable</span><span>Status</span>
+          </div>
+          <div class="table-body" id="list" tabindex="0">
+            <div class="table-inner" id="list-inner"></div>
+            <div class="empty" id="list-empty" hidden></div>
+          </div>
+        </div>
+        <aside class="inspector" id="inspector"></aside>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="view" id="view-history" data-view="history" hidden>
+      <header class="page-head">
+        <div>
+          <h1>History</h1>
+          <p>Your playtime at a glance, and every game Game Variety has played. Played games are skipped by future runs.</p>
+        </div>
+        <div class="page-actions"><button class="btn btn-secondary" id="history-reset" type="button">Reset history</button></div>
+      </header>
+      <div class="page-body narrow">
+        <div class="stat-cards" id="history-stats"></div>
+        <div class="history" id="history"></div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="view" id="view-settings" data-view="settings" hidden>
+      <header class="page-head">
+        <div>
+          <h1>Settings</h1>
+          <p>Storage, catalog, privacy and shortcuts for Badge Booster.</p>
+        </div>
+      </header>
+      <div class="page-body narrow">
+        <div class="section">
+          <div class="section-title">Storage</div>
+          <div class="setting">
+            <div class="setting-text">
+              <div class="setting-label">Placeholder folder</div>
+              <div class="setting-desc">Copies of the placeholder live in <code>%LOCALAPPDATA%\BadgeBooster\games</code>, one folder per game.</div>
+            </div>
+            <div class="setting-control"><button class="btn btn-secondary" id="settings-folder" type="button">Open folder</button></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Catalog</div>
+          <dl class="props" id="catalog-props"></dl>
+        </div>
+        <div class="section">
+          <div class="section-title">Privacy</div>
+          <ul class="checklist">
+            <li>No Discord token, password, cookies or account files are read.</li>
+            <li>The app makes no network requests. The interface loads nothing from the internet.</li>
+            <li>Only processes this app started are ever stopped. Real games are never touched.</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Keyboard shortcuts</div>
+          <dl class="shortcuts">
+            <div><dt>Search everything</dt><dd><kbd>Ctrl</kbd><kbd>K</kbd></dd></div>
+            <div><dt>Filter the library</dt><dd><kbd>/</kbd></dd></div>
+            <div><dt>Move through games</dt><dd><kbd>↑</kbd><kbd>↓</kbd></dd></div>
+            <div><dt>Play the selected game</dt><dd><kbd>Enter</kbd></dd></div>
+            <div><dt>Go to Game Variety, Game Time, Library, History</dt><dd><kbd>Ctrl</kbd><kbd>1</kbd>–<kbd>4</kbd></dd></div>
+          </dl>
+        </div>
+        <p class="disclaimer">Discord recognition and badge credit aren't guaranteed, and spoofing game activity may risk your account.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Command palette -->
+<div class="overlay" id="palette" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="palette-input">
+      <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+      <input id="palette-input" type="text" placeholder="Search games or type a command" autocomplete="off" spellcheck="false">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="palette-list" id="palette-list"></div>
+    <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span><span><kbd>Enter</kbd> Open</span><span><kbd>Ctrl</kbd><kbd>Enter</kbd> Play</span></div>
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div class="overlay" id="modal" hidden>
+  <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-text">
+    <h3 id="modal-title">Reset rotation history?</h3>
+    <p id="modal-text"></p>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" id="modal-cancel" type="button">Cancel</button>
+      <button class="btn btn-danger" id="modal-confirm" type="button">Reset history</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible problem
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include tokens, cookies, or private data. Read SECURITY.md for vulnerabilities."
+  - type: input
+    id: version
+    attributes:
+      label: App version and Windows version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include game and executable variant if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Attach screenshots or errors, with personal information redacted.
+    validations:
+      required: true
